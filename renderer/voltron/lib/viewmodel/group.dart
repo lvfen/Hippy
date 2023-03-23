@@ -32,7 +32,7 @@ class GroupViewModel extends RenderViewModel {
   // pull intercept
   bool interceptPullUp = false;
 
-  final List<RenderViewModel> _children = [];
+  List<RenderViewModel> _children = [];
 
   final HashMap<int, RenderViewModel> _childrenMap = HashMap();
 
@@ -40,6 +40,10 @@ class GroupViewModel extends RenderViewModel {
 
   @override
   List<RenderViewModel> get children => _children;
+
+  set children (List<RenderViewModel> children) {
+    _children = children;
+  }
 
   List<int> get sortedIdList => _sortedIdList;
 

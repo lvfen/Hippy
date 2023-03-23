@@ -168,7 +168,9 @@ class RenderViewModel extends ChangeNotifier {
 
   NativeGestureDispatcher get gestureDispatcher => _dispatcher;
 
-  List<RenderViewModel>? get children => null;
+  List<RenderViewModel> get children => [];
+
+  set children(List<RenderViewModel> children) {}
 
   final RenderContext _renderContext;
 

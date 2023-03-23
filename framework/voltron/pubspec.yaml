@@ -61,7 +61,8 @@ dependencies:
   connectivity_plus: ^2.3.0
   uuid: ^3.0.6
   ffi: ^1.0.0
-  voltron_renderer: 0.0.10
+  voltron_renderer:
+    path: ../../renderer/voltron
   voltron_vfs: 0.0.1
   voltron_ffi: 0.0.1
 

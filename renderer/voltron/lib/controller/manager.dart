@@ -204,6 +204,32 @@ class ControllerManager implements InstanceLifecycleEventListener {
     );
   }
 
+  void syncChildrenIndex(RenderNode node) {
+    var childrenViewModelList = node.children;
+    List<RenderViewModel> newViewModelList = [];
+    node.children.forEach((node) {
+      newViewModelList.add(node.renderViewModel);
+    });
+    node.renderViewModel.children = newViewModelList;
+    // node.children.sort((v1, v2) {
+    //   return v1.ren
+    // });
+
+    // var oldParent = viewModel.parent;
+    // if (oldParent != null && oldParent is GroupViewModel) {
+    //   oldParent.removeViewModel(viewModel);
+    // }
+    // var newParent = toNode.renderViewModel;
+    // if (newParent is GroupViewModel) {
+    //   newParent.addViewModel(viewModel, index);
+    // }
+    //
+    // LogUtils.d(
+    //   "ControllerManager",
+    //   "move id: ${node.id} fromId:${oldParent?.id} toId:${newParent.id} ",
+    // );
+  }
+
   void updateLayout(RenderNode node) {
     final controller = findController(node.name);
     if (controller != null) {

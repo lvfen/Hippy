@@ -105,6 +105,8 @@ class RenderNode extends StyleNode {
   final List<RenderNode> _children = [];
   final List<RenderNode> _childrenPendingList = [];
   final List<MoveHolder> _moveHolders = [];
+  /// moveNode后需要对元素viewModel进行顺序同步
+  bool _needSyncChildrenIndex = false;
   final Set<EventHolder> _eventHolders = {};
   final Set<int> _deleteIds = {};
   RenderViewModel? _viewModel;
@@ -330,6 +332,16 @@ class RenderNode extends StyleNode {
     _childrenPendingList.add(renderNode);
   }
 
+  void moveChild(RenderNode? node, int index) {
+    if (node != null) {
+      _notifyManageChildren = true;
+      if (_children.contains(node)) {
+        _children.remove(node);
+        _children.insert(index, node);
+      }
+    }
+  }
+
   void removeChild(RenderNode? node, {bool needRemoveChild = true}) {
     if (node != null) {
       _notifyManageChildren = true;
@@ -365,6 +377,9 @@ class RenderNode extends StyleNode {
     );
 
     if (_shouldUpdateView()) {
+      if (_needSyncChildrenIndex) {
+        _controllerManager.syncChildrenIndex(this);
+      }
       if (_childrenPendingList.isNotEmpty) {
         _childrenPendingList.sort((o1, o2) {
           return o1.indexFromParent.compareTo(o2.indexFromParent);
@@ -519,6 +534,12 @@ class RenderNode extends StyleNode {
   void move(List<RenderNode> moveRenders, RenderNode moveToRender) {
     if (_shouldUpdateView()) {
       _moveHolders.add(MoveHolder(moveRenders, moveToRender));
+    }
+  }
+
+  void syncChildrenIndex() {
+    if (_shouldUpdateView()) {
+      _needSyncChildrenIndex = true;
     }
   }
 }

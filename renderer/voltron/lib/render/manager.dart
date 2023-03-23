@@ -336,7 +336,7 @@ class RenderManager
     }
   }
 
-  void moveNode(int instanceId, List<int> moveIds, int oldPId, int newPId) {
+  void recombineNode(int instanceId, List<int> moveIds, int oldPId, int moveIndex, int newPId) {
     var parentNode = controllerManager.findNode(instanceId, oldPId);
     var newParent = controllerManager.findNode(instanceId, newPId);
     if (parentNode != null && newParent != null) {
@@ -351,13 +351,45 @@ class RenderManager
           );
           arrayList.add(renderNode);
           parentNode.removeChild(renderNode, needRemoveChild: false);
-          newParent.addChild(renderNode, i);
+          newParent.addChild(renderNode, i + moveIndex);
           i++;
         }
       }
 
       parentNode.move(arrayList, newParent);
       addUpdateNodeIfNeeded(newParent);
+    }
+  }
+
+  void moveNode(
+    int instanceId,
+    int nodeId,
+    int pId,
+    int index,
+  ) {
+    var parentNode = controllerManager.findNode(instanceId, pId);
+    var renderNode = controllerManager.findNode(instanceId, nodeId);
+    if (parentNode != null && renderNode != null) {
+      parentNode.moveChild(renderNode, index);
+
+      // var arrayList = <RenderNode>[];
+      //
+      // var i = 0;
+      // for (var moveId in moveIds) {
+      //
+      //   if (renderNode != null) {
+      //     LogUtils.dRender(
+      //       "ID:$moveId, move node ID:$moveId from ${parentNode.id} to ${newParent.id}",
+      //     );
+      //     arrayList.add(renderNode);
+      //     parentNode.removeChild(renderNode, needRemoveChild: false);
+      //     newParent.addChild(renderNode, i + moveIndex);
+      //     i++;
+      //   }
+      // }
+      //
+      parentNode.syncChildrenIndex();
+      addUpdateNodeIfNeeded(parentNode);
     }
   }
 

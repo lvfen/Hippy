@@ -308,6 +308,9 @@ class VoltronBridgeManager implements Destroyable {
 
   Future<dynamic> destroyBridge(DestoryBridgeCallback<bool> callback, bool isReload) async {
     _thirdPartyAdapter?.onRuntimeDestroy();
+    if (_v8RuntimeId == 0) {
+      return;
+    }
     await VoltronApi.destroy(
       _engineId,
       (value) {

@@ -1,3 +1,7 @@
+## 0.0.41
+
+- resolve crash when bridge destroy
+
 ## 0.0.40
 
 - resolve dio error data is null

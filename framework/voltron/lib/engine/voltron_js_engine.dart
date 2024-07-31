@@ -490,6 +490,10 @@ class VoltronJSEngine implements OnResumeAndPauseListener, DevServerCallback {
   }
 
   void destroyEngine() {
+    // 避免重复销毁
+    if (_currentState == EngineState.destroyed) {
+      return;
+    }
     _currentState = EngineState.destroyed;
     _engineContext?.renderContext.forEachInstance(destroyInstance);
     _eventListenerList.clear();

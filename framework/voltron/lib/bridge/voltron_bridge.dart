@@ -135,6 +135,7 @@ class VoltronBridgeManager implements Destroyable {
 
   Future<dynamic> initBridge(Callback callback) async {
     try {
+      LogUtils.i(_kTag, "initBridge start");
       int devtoolsId = await _handleVoltronInspectorInit();
       _context.startTimeMonitor.startEvent(EngineMonitorEventKey.engineLoadEventInitBridge);
       _v8RuntimeId = await VoltronApi.initJsFrameWork(
@@ -150,6 +151,7 @@ class VoltronBridgeManager implements Destroyable {
           _thirdPartyAdapter?.setVoltronBridgeId(value);
 
           _context.onRuntimeInitialized(_v8RuntimeId);
+          LogUtils.i(_kTag, "initBridge success, engineId: $_engineId, runtimeId: $_v8RuntimeId");
 
           _context.startTimeMonitor.startEvent(
             EngineMonitorEventKey.engineLoadEventLoadCommonJs,
@@ -308,9 +310,12 @@ class VoltronBridgeManager implements Destroyable {
 
   Future<dynamic> destroyBridge(DestoryBridgeCallback<bool> callback, bool isReload) async {
     _thirdPartyAdapter?.onRuntimeDestroy();
+    LogUtils.i(_kTag, "destroyBridge($_v8RuntimeId) start");
     if (_v8RuntimeId == 0) {
+      LogUtils.i(_kTag, "destroyBridge($_v8RuntimeId) failed, already destroyed");
       return;
     }
+    LogUtils.i(_kTag, "destroyBridge($_v8RuntimeId) call inner destroy");
     await VoltronApi.destroy(
       _engineId,
       (value) {

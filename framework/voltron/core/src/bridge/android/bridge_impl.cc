@@ -131,7 +131,7 @@ int64_t BridgeImpl::InitJsEngine(const std::shared_ptr<JSBridgeRuntime> &platfor
     dart_callback(scope_id);
   };
 
-  auto engine = JsDriverUtils::CreateEngineAndAsyncInitialize(dom_task_runner, param, group_id);
+  auto engine = JsDriverUtils::CreateEngineAndAsyncInitialize(dom_task_runner, param, group_id, false);
   {
     std::lock_guard<std::mutex> lock(holder_mutex);
     engine_holder[engine.get()] = engine;

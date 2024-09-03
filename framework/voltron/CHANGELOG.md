@@ -1,3 +1,11 @@
+## 0.0.43
+
+- fix android libs no package
+
+## 0.0.42
+
+- remove android unused gradle dependencies
+
 ## 0.0.41
 
 - resolve crash when bridge destroy

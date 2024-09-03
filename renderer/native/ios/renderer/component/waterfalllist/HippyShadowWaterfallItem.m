@@ -21,6 +21,7 @@
  */
 
 #import "HippyShadowWaterfallItem.h"
+#import "HippyRenderUtils.h"
 
 @implementation HippyShadowWaterfallItem
 
@@ -35,7 +36,7 @@
 - (void)setFrame:(CGRect)frame {
     CGRect originFrame = self.frame;
     [super setFrame:frame];
-    if (!CGSizeEqualToSize(originFrame.size, frame.size) &&
+    if (!HippyCGSizeRoundInPixelNearlyEqual(originFrame.size, frame.size) &&
         [self.observer respondsToSelector:@selector(itemFrameChanged:)]) {
         [self.observer itemFrameChanged:self];
     }
@@ -46,17 +47,7 @@
         // If item has not yet been created, then no need to collect blocks.
         return;
     }
-    _layoutDirty = NO;
-    if (NativeRenderUpdateLifecycleComputed == _propagationLifecycle) {
-        return;
-    }
-    if (NativeRenderUpdateLifecycleLayoutDirtied == _propagationLifecycle) {
-        _layoutDirty = YES;
-    }
-    _propagationLifecycle = NativeRenderUpdateLifecycleComputed;
-    for (HippyShadowView *renderObjectView in self.subcomponents) {
-        [renderObjectView amendLayoutBeforeMount:blocks];
-    }
+    [super amendLayoutBeforeMount:blocks];
 }
 
 @end

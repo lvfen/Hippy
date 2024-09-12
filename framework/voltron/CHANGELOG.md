@@ -1,3 +1,7 @@
+## 0.0.44
+
+- fix http header format
+
 ## 0.0.43
 
 - fix android libs no package

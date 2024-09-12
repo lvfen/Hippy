@@ -22,7 +22,7 @@
 
 name: voltron
 description: A flutter plugin project to render hippy page.
-version: 0.0.43
+version: 0.0.44
 homepage: https://hippyjs.org
 repository: https://github.com/Tencent/Hippy
 

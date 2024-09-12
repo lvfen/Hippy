@@ -100,7 +100,7 @@ class NetworkInspector {
   /// on network request response callback invoke with httpResponse
   /// more details, see https://chromedevtools.github.io/devtools-protocol/tot/Network/#event-responseReceived
   void onResponseReceived(EngineContext context, String requestId, VoltronHttpResponse? httpResponse) {
-    final responseHeader = httpResponse?.headerMap.map((key, value) => MapEntry(key, value.join(';'))) ?? {};
+    final responseHeader = httpResponse?.headerMap ?? {};
     final requestHeader = httpResponse?.requestOptions?.headers.map((key, value) {
           if (value is List) {
             return MapEntry(key, value.join(';'));

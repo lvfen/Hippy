@@ -34,6 +34,12 @@ abstract class VoltronHttpAdapter with Destroyable {
   TRequestWillBeSentHook? requestWillBeSentHook;
   TResponseReceivedHook? responseReceivedHook;
 
+  Map<String, String> normalizeResponseHeader(
+    Map<String, List<String>> resHeaderMap,
+  ) {
+    return resHeaderMap.map((key, value) => MapEntry(key, value.join(';')));
+  }
+
   void init({
     required EngineContext context,
     TRequestWillBeSentHook? requestWillBeSentHook,
@@ -60,12 +66,13 @@ abstract class VoltronHttpAdapter with Destroyable {
       onSuccess(httpRequest, httpResponse, promise);
     } catch (e) {
       if (e is DioError) {
+        var resHeaderMap = e.response?.headers.map;
         httpResponse = VoltronHttpResponse(
           statusCode: e.response?.statusCode ?? VoltronHttpResponse.unknownStatus,
           statusMessage: e.response?.statusMessage ?? '',
-          headerMap: e.response?.headers.map ?? {},
+          headerMap: resHeaderMap != null ? normalizeResponseHeader(resHeaderMap) : {},
           requestOptions: e.requestOptions,
-          data: e.response?.data??'',
+          data: e.response?.data ?? '',
         );
       } else {
         httpResponse = VoltronHttpResponse(
@@ -155,14 +162,20 @@ class DefaultHttpAdapter extends VoltronHttpAdapter {
     for (var key in headers.keySet()) {
       final value = headers.get(key);
       if (value is VoltronArray) {
-        var headerValueArray = <Object>[];
-        for (var i = 0; i < value.size(); i++) {
-          var v = value.get<Object>(i);
-          if (v != null) {
-            headerValueArray.add(v);
+        if (value.size() == 1) {
+          httpRequest.addHeader(key, value.get(0).toString());
+        } else if (value.size() > 1) {
+          List<String> listString = <String>[];
+          for (var i = 0; i < value.size(); i++) {
+            var v = value.get<String>(i);
+            if (v != null) {
+              listString.add(v);
+            }
           }
+          httpRequest.addHeader(key, listString.join(','));
         }
-        httpRequest.addHeader(key, headerValueArray);
+      } else if (value is String) {
+        httpRequest.addHeader(key, value);
       } else {
         LogUtils.e(
           'NetworkModule _voltronMapToRequestHeaders',
@@ -190,7 +203,7 @@ class DefaultHttpAdapter extends VoltronHttpAdapter {
     return VoltronHttpResponse(
       statusCode: dioResponse.statusCode ?? VoltronHttpResponse.unknownStatus,
       statusMessage: dioResponse.statusMessage ?? '',
-      headerMap: dioResponse.headers.map,
+      headerMap: normalizeResponseHeader(dioResponse.headers.map),
       requestOptions: dioResponse.requestOptions,
       data: dioResponse.data,
     );
@@ -228,12 +241,6 @@ class DefaultHttpAdapter extends VoltronHttpAdapter {
     }
     respMap.push("respBody", rspBody);
     respMap.push("statusLine", response.statusMessage);
-    var headers = response.headerMap;
-    headers.forEach((key, value) {
-      if (key.toLowerCase() == HttpHeaderRsp.kSetCookie.toLowerCase()) {
-        channel.CookieManager.getInstance().setCookie(request.url, value);
-      }
-    });
     respMap.push("respHeaders", response.headerMap.toVoltronMap());
     respMap.push("respBody", rspBody);
     promise.resolve(respMap);
@@ -295,7 +302,7 @@ class VoltronHttpRequest {
   final String body;
   String? _userAgent;
   late String requestId = '';
-  Map<String, Object> headerMap = {};
+  Map<String, String> headerMap = {};
 
   VoltronHttpRequest({
     this.method = 'GET',
@@ -311,7 +318,7 @@ class VoltronHttpRequest {
     addHeader(HttpHeaderReq.kUserAgent, _userAgent!);
   }
 
-  void addHeader(String name, Object value) {
+  void addHeader(String name, String value) {
     headerMap[name] = value;
   }
 
@@ -344,7 +351,7 @@ class VoltronHttpRequest {
 class VoltronHttpResponse {
   static const int unknownStatus = -1;
   final int statusCode;
-  final Map<String, dynamic> headerMap;
+  final Map<String, String> headerMap;
   final String statusMessage;
   final Object data;
   final RequestOptions? requestOptions;

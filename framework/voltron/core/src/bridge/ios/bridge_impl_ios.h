@@ -40,7 +40,7 @@ class BridgeImpl {
                               const std::unique_ptr<WorkerManager> &worker_manager,
                               uint32_t dom_manager_id,
                               const char16_t* char_globalConfig, size_t initial_heap_size, size_t maximum_heap_size,
-                              std::function<void(int64_t)> callback, uint32_t devtools_id);
+                              std::function<void(int64_t)> callback, uint32_t devtools_id, bool is_reload);
 
   static bool RunScriptFromUri(int64_t runtime_id,
                                uint32_t vfs_id,

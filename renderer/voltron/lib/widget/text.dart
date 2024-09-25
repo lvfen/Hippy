@@ -41,7 +41,8 @@ class TextWidget extends FRStatefulWidget {
 class _TextWidgetState extends FRState<TextWidget> {
   @override
   Widget build(BuildContext context) {
-    LogUtils.dWidget("ID:${widget._viewModel.id}, node:${widget._viewModel.idDesc}, build text widget");
+    LogUtils.dWidget(
+        "ID:${widget._viewModel.id}, node:${widget._viewModel.idDesc}, build text widget");
     return ChangeNotifierProvider.value(
       value: widget._viewModel,
       child: Consumer<TextRenderViewModel>(
@@ -56,7 +57,8 @@ class _TextWidgetState extends FRState<TextWidget> {
   }
 
   Widget textView(TextRenderViewModel textModel) {
-    LogUtils.dWidget("ID:${widget._viewModel.id}, node:${widget._viewModel.idDesc}, build text inner widget");
+    LogUtils.dWidget(
+        "ID:${widget._viewModel.id}, node:${widget._viewModel.idDesc}, build text inner widget");
     var data = textModel.data;
     if (data != null) {
       return Container(
@@ -65,7 +67,7 @@ class _TextWidgetState extends FRState<TextWidget> {
           text: data.text,
           textAlign: data.textAlign,
           maxLines: data.maxLines,
-          textScaleFactor: data.textScaleFactor,
+          textScaler: data.textScaleFactor,
           overflow: data.textOverflow,
         ),
       );

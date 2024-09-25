@@ -297,6 +297,14 @@ class VirtualNodeManager {
     node.updateEvent(EventHolder(eventName, isAdd: false));
   }
 
+  // 这里传输的时候传输物理像素，因为taitank计算小数点的时候会按照物理像素计算，所以传过去px，让taitank内部计算
+  double dpToPx(double len) {
+    var density = ScreenUtil.getInstance().scale;
+    // 兼容测试用例
+    density = density <= 0 ? 1.0 : density;
+    return (len * density).ceilToDouble();
+  }
+
   int measure(int instanceId, int nodeId, FlexLayoutParams layoutParams) {
     TextPainter? painter;
     var exception = false;
@@ -323,7 +331,7 @@ class VirtualNodeManager {
       LogUtils.dRenderNode(
         'ID:$nodeId, calculate layout success, width:${painter.width}, height:${painter.height}',
       );
-      return FlexOutput.makeMeasureResult(painter.width, painter.height);
+      return FlexOutput.makeMeasureResult(dpToPx(painter.width), dpToPx(painter.height));
     }
   }
 

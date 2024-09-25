@@ -43,6 +43,7 @@ typedef InitJsFrameworkFfiNativeType = Int64 Function(
   Int32 engineId,
   Int32 callbackId,
   Uint32 devtoolsId,
+  Uint32 isReload,
 );
 typedef InitJsFrameworkFfiDartType = int Function(
   Pointer<Utf16> globalConfig,
@@ -56,6 +57,7 @@ typedef InitJsFrameworkFfiDartType = int Function(
   int engineId,
   int callbackId,
   int devtoolsId,
+  int isReload,
 );
 
 typedef RunScriptFromUriFfiNativeType = Int32 Function(

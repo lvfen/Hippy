@@ -178,6 +178,7 @@ class VoltronApi {
     bool singleThreadMode = false,
     bool isDevModule = false,
     required int groupId,
+    required bool isReload,
     required int engineId,
     required int vfsId,
     required int domId,
@@ -202,6 +203,7 @@ class VoltronApi {
         },
       ),
       devtoolsId,
+      isReload ? 1 : 0,
     );
     free(globalConfigPtr);
     return result;

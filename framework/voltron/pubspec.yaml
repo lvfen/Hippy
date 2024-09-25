@@ -22,13 +22,13 @@
 
 name: voltron
 description: A flutter plugin project to render hippy page.
-version: 0.0.44
+version: 0.0.45
 homepage: https://hippyjs.org
 repository: https://github.com/Tencent/Hippy
 
 environment:
-  sdk: ">=2.18.4 <4.0.0"
-  flutter: ">=3.3.8"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.16.1"
 
 
 # The following section is specific to Flutter.
@@ -60,9 +60,10 @@ dependencies:
   connectivity_plus: ^3.0.6
   uuid: ^3.0.6
   ffi: ^2.0.0
-  voltron_renderer: 0.0.27
+  voltron_renderer: 0.0.29
   voltron_vfs: 0.0.7
   voltron_ffi: 0.0.6
+
 
 dev_dependencies:
   flutter_test:

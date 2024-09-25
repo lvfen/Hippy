@@ -133,7 +133,7 @@ class VoltronBridgeManager implements Destroyable {
     );
   }
 
-  Future<dynamic> initBridge(Callback callback) async {
+  Future<dynamic> initBridge(Callback callback, bool isReload) async {
     try {
       LogUtils.i(_kTag, "initBridge start");
       int devtoolsId = await _handleVoltronInspectorInit();
@@ -143,6 +143,7 @@ class VoltronBridgeManager implements Destroyable {
         singleThreadMode: _isSingleThread,
         isDevModule: _isDevModule,
         groupId: _groupId,
+        isReload: isReload,
         engineId: _engineId,
         vfsId: _context.vfsManager.id,
         domId: _context.renderContext.domHolder.id,

@@ -150,15 +150,13 @@ class RenderViewModel extends ChangeNotifier {
 
   double? get height => _height;
 
-  bool get noPosition => _x == null || _y == null || _x == double.nan || _y == double.nan;
+  bool get noPosition => _x == null || _y == null;
 
   bool get noSize =>
       _width == null ||
       _height == null ||
       (_width ?? 0.0).isNaN ||
       (_height ?? 0.0).isNaN ||
-      _width == double.nan ||
-      _height == double.nan ||
       (_width ?? 0.0) <= 0.0 ||
       (_height ?? 0.0) <= 0.0;
 

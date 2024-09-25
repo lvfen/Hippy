@@ -222,4 +222,8 @@ void VoltronRenderManager::MoveRenderNode(std::weak_ptr<RootNode> root_node,
   }
 }
 
+float VoltronRenderManager::GetDensityFromRenderManager() {
+    return RenderManager::GetDensity();
+}
+
 } // namespace voltron

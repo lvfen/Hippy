@@ -164,7 +164,8 @@ int64_t BridgeImpl::InitJsEngine(std::shared_ptr<voltron::JSBridgeRuntime> platf
                                     size_t initial_heap_size,
                                     size_t maximum_heap_size,
                                     std::function<void(int64_t)> callback,
-                                    uint32_t devtools_id) {
+                                    uint32_t devtools_id,
+                                    bool is_reload) {
     VoltronFlutterBridge *bridge = [VoltronFlutterBridge new];
     bridge.platformRuntime = platform_runtime;
     [getKeepContainer() setValue:bridge forKey:Addr2Str(bridge)];

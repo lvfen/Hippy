@@ -40,7 +40,7 @@ FlexUnit flexUnitFromInt(int value) {
   }
 }
 
-class FlexValueNative extends Struct {
+base class FlexValueNative extends Struct {
   @Float()
   external double value;
 

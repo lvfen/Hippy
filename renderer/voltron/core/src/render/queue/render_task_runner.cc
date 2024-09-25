@@ -21,7 +21,7 @@
  */
 
 #include <memory>
-
+#include "footstone/macros.h"
 #include "render/bridge/bridge_manager.h"
 
 #include "callback_manager.h"
@@ -391,16 +391,24 @@ void VoltronRenderTaskRunner::RunRemoveEventListener(uint32_t root_id, const uin
 }
 
 void VoltronRenderTaskRunner::SetNodeCustomMeasure(uint32_t root_id,
-                                                   const Sp<DomNode> &dom_node) const {
+                                                   const Sp<DomNode> &dom_node) {
   if (dom_node) {
     auto layout_node = dom_node->GetLayoutNode();
     if (layout_node) {
       auto engine_id = engine_id_;
       auto node_id = dom_node->GetId();
       layout_node->SetMeasureFunction(
-          [engine_id, root_id, node_id](
+          [
+            WEAK_THIS,
+            engine_id, root_id, node_id](
               float width, LayoutMeasureMode widthMeasureMode, float height,
               LayoutMeasureMode heightMeasureMode, void *layoutContext) {
+              DEFINE_SELF(VoltronRenderTaskRunner)
+              if (!self) {
+                  int* p = nullptr;
+                  *p = 0;
+                  return LayoutSize{0, 0};
+              }
             auto bridge_manager = BridgeManager::Find(engine_id);
             if (bridge_manager) {
               auto runtime = bridge_manager->GetRuntime();
@@ -416,7 +424,9 @@ void VoltronRenderTaskRunner::SetNodeCustomMeasure(uint32_t root_id,
                     0xFFFFFFFF & (measure_result >> 32));
                 int32_t h_bits = footstone::checked_numeric_cast<long long, int32_t>(
                     0xFFFFFFFF & measure_result);
-                return VoltronRenderTaskRunner::LayoutSize{(float) w_bits, (float) h_bits};
+                float w_dp = self->PxToDp((float) w_bits);
+                float h_dp = self->PxToDp((float) h_bits);
+                return VoltronRenderTaskRunner::LayoutSize{w_dp, h_dp};
               }
             }
             return LayoutSize{0, 0};
@@ -424,6 +434,10 @@ void VoltronRenderTaskRunner::SetNodeCustomMeasure(uint32_t root_id,
     }
   }
 }
+
+float VoltronRenderTaskRunner::DpToPx(float dp) { return dp * GetDensityFromRenderManager(); }
+
+float VoltronRenderTaskRunner::PxToDp(float px) { return px / GetDensityFromRenderManager(); }
 
 Sp<DomManager> VoltronRenderTaskRunner::GetDomManager() {
   return dom_manager_.lock();

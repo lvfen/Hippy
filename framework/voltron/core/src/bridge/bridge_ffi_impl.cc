@@ -110,7 +110,7 @@ EXTERN_C void UnloadInstanceFFI(int32_t engine_id, const char* params, int32_t p
 EXTERN_C int64_t InitJSFrameworkFFI(const char16_t* global_config, int32_t single_thread_mode,
                                     int32_t bridge_param_json, int32_t is_dev_module, int64_t group_id,
                                     uint32_t vfs_id, uint32_t ffi_id, uint32_t dom_manager_id,
-                                    int32_t engine_id, int32_t callback_id, uint32_t devtools_id) {
+                                    int32_t engine_id, int32_t callback_id, uint32_t devtools_id, int32_t is_reload) {
   auto ffi_runtime = std::make_shared<FFIJSBridgeRuntime>(engine_id, ffi_id, bridge_param_json);
   auto bridge_manager = BridgeManager::Create(engine_id, ffi_runtime);
 
@@ -120,7 +120,7 @@ EXTERN_C int64_t InitJSFrameworkFFI(const char16_t* global_config, int32_t singl
 
   auto result = BridgeImpl::InitJsEngine(ffi_runtime, single_thread_mode, bridge_param_json, is_dev_module, group_id,
                                          vfs_wrapper->GetLoader()->GetWorkerManager(), dom_manager_id, global_config, 0, 0,
-                                         [callback_id, ffi_id](int64_t value) { CallGlobalCallback(ffi_id, callback_id, value); }, devtools_id);
+                                         [callback_id, ffi_id](int64_t value) { CallGlobalCallback(ffi_id, callback_id, value); }, devtools_id, is_reload);
   ffi_runtime->SetRuntimeId(result);
 
   return result;

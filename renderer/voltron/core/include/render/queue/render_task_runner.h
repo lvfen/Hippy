@@ -22,13 +22,15 @@
 
 #pragma once
 
+#include <memory>
+#include "footstone/macros.h"
 #include "dom/dom_listener.h"
 #include "dom/dom_node.h"
 #include "render_queue.h"
 
 namespace voltron {
 
-class VoltronRenderTaskRunner {
+class VoltronRenderTaskRunner: public std::enable_shared_from_this<VoltronRenderTaskRunner> {
 public:
   using DomArgument = hippy::DomArgument;
   using DomManager = hippy::DomManager;
@@ -64,13 +66,17 @@ public:
 
   uint32_t GetId() { return render_manager_id_; }
   void BindBridgeId(int32_t bridge_id) { engine_id_ = bridge_id; }
+  virtual float GetDensityFromRenderManager() = 0;
 
  private:
   void ConsumeQueue(uint32_t root_id);
   static EncodableValue DecodeDomValueMap(const SpMap<HippyValue> &value_map);
   static EncodableValue DecodeDomValue(const HippyValue &value);
   static HippyValue EncodeDomValue(const EncodableValue &value);
-  void SetNodeCustomMeasure(uint32_t root_id, const Sp<DomNode> &dom_node) const;
+  void SetNodeCustomMeasure(uint32_t root_id, const Sp<DomNode> &dom_node);
+  inline float DpToPx(float dp);
+  inline float PxToDp(float px);
+
   Sp<VoltronRenderQueue> queue(uint32_t root_id);
   std::map<uint32_t, Sp<VoltronRenderQueue>> queue_map_;
 

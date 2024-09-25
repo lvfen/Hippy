@@ -355,7 +355,7 @@ class VoltronJSEngine implements OnResumeAndPauseListener, DevServerCallback {
         _notifyEngineInitialized(EngineInitStatus.wrongState, e);
         _startTimeMonitor.end();
       }
-    });
+    }, isReload);
   }
 
   int get bridgeType => VoltronBridgeManager.kBridgeTypeNormal;

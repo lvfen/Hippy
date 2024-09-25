@@ -73,6 +73,8 @@ class VoltronRenderManager : public hippy::RenderManager,
                  const std::unique_ptr<EncodableValue> &params);
   void Notify();
 
+  float GetDensityFromRenderManager() override;
+
  private:
   void MarkTextDirty(const std::weak_ptr<RootNode> &root_node, uint32_t node_id);
   static void MarkDirtyProperty(std::shared_ptr<std::unordered_map<std::string,

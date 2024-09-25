@@ -76,7 +76,7 @@ class TextVirtualNode extends VirtualNode {
   FontStyle _fontStyle = FontStyle.normal;
   FontWeight? _fontWeight;
   TextOverflow _textOverflow = TextOverflow.ellipsis;
-  double customTextScale = 1.0;
+  TextScaler customTextScale = TextScaler.linear(1.0);
 
   // 文本阴影属性
   double _textShadowOffsetDx = 0;
@@ -218,8 +218,7 @@ class TextVirtualNode extends VirtualNode {
   void textDecorationLine(String textDecorationLineString) {
     _isUnderlineTextDecorationSet = false;
     _isLineThroughTextDecorationSet = false;
-    for (var textDecorationLineSubString
-        in textDecorationLineString.split(" ")) {
+    for (var textDecorationLineSubString in textDecorationLineString.split(" ")) {
       if ("underline" == textDecorationLineSubString) {
         _isUnderlineTextDecorationSet = true;
       } else if ("line-through" == textDecorationLineSubString) {
@@ -239,8 +238,7 @@ class TextVirtualNode extends VirtualNode {
       'wavy': TextDecorationStyle.wavy,
     };
 
-    _textDecorationStyle =
-        propertyMap[textDecorationStyleString] ?? TextDecorationStyle.solid;
+    _textDecorationStyle = propertyMap[textDecorationStyleString] ?? TextDecorationStyle.solid;
     markDirty();
   }
 
@@ -252,14 +250,12 @@ class TextVirtualNode extends VirtualNode {
 
   @ControllerProps(NodeProps.kPropShadowOffset)
   void textShadowOffset(VoltronMap offsetMap) {
-    _textShadowOffsetDx =
-        offsetMap.get<double>(NodeProps.kPropShadowOffsetWidth) ??
-            offsetMap.get<int>(NodeProps.kPropShadowOffsetWidth)?.toDouble() ??
-            0.0;
-    _textShadowOffsetDy =
-        offsetMap.get<double>(NodeProps.kPropShadowOffsetHeight) ??
-            offsetMap.get<int>(NodeProps.kPropShadowOffsetHeight)?.toDouble() ??
-            0.0;
+    _textShadowOffsetDx = offsetMap.get<double>(NodeProps.kPropShadowOffsetWidth) ??
+        offsetMap.get<int>(NodeProps.kPropShadowOffsetWidth)?.toDouble() ??
+        0.0;
+    _textShadowOffsetDy = offsetMap.get<double>(NodeProps.kPropShadowOffsetHeight) ??
+        offsetMap.get<int>(NodeProps.kPropShadowOffsetHeight)?.toDouble() ??
+        0.0;
     markDirty();
   }
 
@@ -415,9 +411,7 @@ class TextVirtualNode extends VirtualNode {
           decorationColor: Color(_textDecorationColor),
         ),
         children: childrenSpan,
-        recognizer: nativeGestureDispatcher.needListener()
-            ? _tapGestureRecognizer
-            : null,
+        recognizer: nativeGestureDispatcher.needListener() ? _tapGestureRecognizer : null,
       );
     }
     return const TextSpan(text: "");
@@ -443,8 +437,7 @@ class TextVirtualNode extends VirtualNode {
   }
 
   TextPainter createPainter(double width, FlexMeasureMode widthMode) {
-    var unconstrainedWidth =
-        widthMode == FlexMeasureMode.undefined || width < 0;
+    var unconstrainedWidth = widthMode == FlexMeasureMode.undefined || width < 0;
     var maxWidth = unconstrainedWidth ? double.infinity : width;
     if (span == null || dirty) {
       span = createSpan(useChild: true);
@@ -456,7 +449,7 @@ class TextVirtualNode extends VirtualNode {
       textDirection: TextDirection.ltr,
       textAlign: _textAlign,
       ellipsis: kEllipsis,
-      textScaleFactor: _generateTextScale(),
+      textScaler: _generateTextScale(),
     );
     painter.setPlaceholderDimensions(_placeholderDimensions);
     painter.layout(maxWidth: maxWidth);
@@ -471,8 +464,8 @@ class TextVirtualNode extends VirtualNode {
     return lineHeight / _fontSize;
   }
 
-  double _generateTextScale() {
-    var textScaleFactor = 1.0;
+  TextScaler _generateTextScale() {
+    var textScaleFactor = TextScaler.linear(1.0);
     if (_enableScale) {
       textScaleFactor = customTextScale;
     }
@@ -644,7 +637,7 @@ class TextData {
   final InlineSpan text;
   final TextAlign textAlign;
   final String ellipsis = kEllipsis;
-  final double textScaleFactor;
+  final TextScaler textScaleFactor;
   final TextOverflow textOverflow;
 
   TextData(

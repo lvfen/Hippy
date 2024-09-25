@@ -23,13 +23,13 @@
 
 name: voltron_renderer
 description: voltron renderer
-version: 0.0.27
+version: 0.0.29
 homepage: https://hippyjs.org
 repository: https://github.com/Tencent/Hippy
 
 environment:
-  sdk: ">=2.18.4 <3.0.0"
-  flutter: ">=3.3.8"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.16.1"
 
 dependencies:
   flutter:

@@ -24,8 +24,8 @@ import 'package:voltron_renderer/voltron_renderer.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
-import './event_dispatcher.dart';
 import '../engine.dart';
+import './event_dispatcher.dart';
 import 'module.dart';
 import 'promise.dart';
 

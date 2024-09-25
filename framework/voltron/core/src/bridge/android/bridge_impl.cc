@@ -83,7 +83,8 @@ int64_t BridgeImpl::InitJsEngine(const std::shared_ptr<JSBridgeRuntime> &platfor
                                  size_t initial_heap_size,
                                  size_t maximum_heap_size,
                                  const std::function<void(int64_t)> &callback,
-                                 uint32_t devtools_id) {
+                                 uint32_t devtools_id,
+                                 bool is_reload) {
   FOOTSTONE_LOG(INFO) << "LoadInstance begin, single_thread_mode = "
                       << single_thread_mode
                       << ", bridge_param_json = "
@@ -131,7 +132,7 @@ int64_t BridgeImpl::InitJsEngine(const std::shared_ptr<JSBridgeRuntime> &platfor
     dart_callback(scope_id);
   };
 
-  auto engine = JsDriverUtils::CreateEngineAndAsyncInitialize(dom_task_runner, param, group_id, false);
+  auto engine = JsDriverUtils::CreateEngineAndAsyncInitialize(dom_task_runner, param, group_id, is_reload);
   {
     std::lock_guard<std::mutex> lock(holder_mutex);
     engine_holder[engine.get()] = engine;

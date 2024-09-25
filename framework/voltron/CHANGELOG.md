@@ -1,3 +1,7 @@
+## 0.0.45
+
+- update flutter to 3.16.9
+
 ## 0.0.44
 
 - fix http header format

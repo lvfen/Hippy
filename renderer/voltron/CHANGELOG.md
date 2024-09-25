@@ -1,3 +1,11 @@
+## 0.0.29
+
+- fix some problems
+
+## 0.0.28
+
+- update flutter to 3.16.9
+
 ## 0.0.27
 
 - resolve merge conflicts

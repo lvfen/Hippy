@@ -272,7 +272,7 @@ class _BoxWidgetState extends FRState<BoxWidget> {
 
     if (widget._viewModel.isOverflowClip) {
       current = ClipRRect(
-        borderRadius: widget._viewModel.toBorderRadius,
+        borderRadius: widget._viewModel.toBorderRadius ?? BorderRadius.zero,
         clipBehavior: Clip.hardEdge,
         child: current,
       );

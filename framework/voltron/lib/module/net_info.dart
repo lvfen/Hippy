@@ -41,7 +41,7 @@ class NetInfoModule extends VoltronNativeModule {
   bool getCurrentConnectivity(final JSPromise promise) {
     Connectivity().checkConnectivity().then((res) {
       var params = VoltronMap();
-      params.push<String>("network_info", res.name.toUpperCase());
+      params.push<String>("network_info", res.first.name.toUpperCase());
       promise.resolve(params);
     }).catchError((err) {
       promise.reject(err.toString());

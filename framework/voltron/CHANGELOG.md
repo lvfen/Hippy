@@ -1,3 +1,7 @@
+## 0.0.46
+
+- update connectivity_plus to 6.0.2
+
 ## 0.0.45
 
 - update flutter to 3.16.9

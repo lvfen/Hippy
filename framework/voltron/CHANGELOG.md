@@ -1,6 +1,6 @@
 ## 0.0.46
 
-- update connectivity_plus to 6.0.2
+- delete ConnectivityPlusPlugin
 
 ## 0.0.45
 

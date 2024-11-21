@@ -20,7 +20,6 @@
 
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:voltron_renderer/voltron_renderer.dart';
 
 import '../engine.dart';
@@ -39,13 +38,7 @@ class NetInfoModule extends VoltronNativeModule {
 
   @VoltronMethod(funcGetCurrentConnectivity)
   bool getCurrentConnectivity(final JSPromise promise) {
-    Connectivity().checkConnectivity().then((res) {
-      var params = VoltronMap();
-      params.push<String>("network_info", res.first.name.toUpperCase());
-      promise.resolve(params);
-    }).catchError((err) {
-      promise.reject(err.toString());
-    });
+    promise.reject('not support');
     return true;
   }
 
@@ -60,16 +53,16 @@ class NetInfoModule extends VoltronNativeModule {
   }
 
   void registerReceiver() {
-    subscription = Connectivity().onConnectivityChanged.listen((res) {
-      var params = VoltronMap();
-      params.push<String>("network_info", res.first.name.toUpperCase());
-      // 这里的context是EngineContext，在module中可以直接获取到
-      context.moduleManager
-          .getJavaScriptModule<EventDispatcher>(
-            enumValueToString(JavaScriptModuleType.EventDispatcher),
-          )
-          ?.receiveNativeEvent("networkStatusDidChange", params);
-    });
+    // subscription = Connectivity().onConnectivityChanged.listen((res) {
+    //   var params = VoltronMap();
+    //   params.push<String>("network_info", res.first.name.toUpperCase());
+    //   // 这里的context是EngineContext，在module中可以直接获取到
+    //   context.moduleManager
+    //       .getJavaScriptModule<EventDispatcher>(
+    //         enumValueToString(JavaScriptModuleType.EventDispatcher),
+    //       )
+    //       ?.receiveNativeEvent("networkStatusDidChange", params);
+    // });
   }
 
   void unregisterReceiver() {

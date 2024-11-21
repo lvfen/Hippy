@@ -62,7 +62,7 @@ class NetInfoModule extends VoltronNativeModule {
   void registerReceiver() {
     subscription = Connectivity().onConnectivityChanged.listen((res) {
       var params = VoltronMap();
-      params.push<String>("network_info", res.name.toUpperCase());
+      params.push<String>("network_info", res.first.name.toUpperCase());
       // 这里的context是EngineContext，在module中可以直接获取到
       context.moduleManager
           .getJavaScriptModule<EventDispatcher>(
